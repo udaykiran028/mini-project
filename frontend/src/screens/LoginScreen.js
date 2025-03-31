@@ -44,8 +44,8 @@ const LoginScreen = ({ navigation }) => {
         userType: userType,
       };
       console.log("Sent Data to Server:", sentdata);
-  
-      const response = await fetch(`http://192.168.0.102:5000/checkUserInfo`, {
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+      const response = await fetch(`${API_BASE_URL}/checkUserInfo`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sentdata),

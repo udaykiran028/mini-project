@@ -25,6 +25,7 @@ const LecturerDashboard = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [attendance, setAttendance] = useState({});
   const [attendanceId, setAttendenceId] = useState(null);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; 
 
   const selectImage = () => {
     const options = { mediaType: "photo", quality: 1, saveToPhotos: true };
@@ -80,7 +81,7 @@ const LecturerDashboard = ({ navigation }) => {
 
     try {
       const response = await fetch(
-        "http://192.168.0.102:5000/lecturer-api/upload-attendance",
+        `${API_BASE_URL}/lecturer-api/upload-attendance`,
         {
           method: "POST",
           body: formData,
@@ -111,7 +112,7 @@ const LecturerDashboard = ({ navigation }) => {
   const fetchStudents = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.0.102:5000/lecturer-api/get-students");
+      const response = await fetch(`${API_BASE_URL}/lecturer-api/get-students`);
       const data = await response.json();
 
       if (data.success) {
@@ -157,7 +158,7 @@ const LecturerDashboard = ({ navigation }) => {
 
     try {
       const response = await fetch(
-        "http://192.168.0.102:5000/lecturer-api/submit-attendance",
+        `${API_BASE_URL}/lecturer-api/submit-attendance`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

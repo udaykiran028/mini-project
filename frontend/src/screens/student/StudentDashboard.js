@@ -9,11 +9,12 @@ const StudentDashboard = ({navigation}) => {
   const [totalClasses, setTotalClasses] = useState(0);
   const [percentage, setPercentage] = useState(0);
   const { logoutUser } = useUser(); // Function to clear user data from context
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://192.168.0.102:5000/student-api/total-classes");
+        const response = await fetch(`${API_BASE_URL}/student-api/total-classes`);
         const data = await response.json();
         console.log("Sent Data to Server:", student); // Debugging log
         console.log("Response from server:", data);
