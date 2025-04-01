@@ -1,4 +1,8 @@
 #!/bin/bash
+sudo apt-get update
+sudo apt-get install -y cmake
+
+sudo apt-get install -y cmake build-essential libgtk-3-dev libboost-all-dev
 
 # Install system dependencies (CMake, Boost, OpenBLAS, GTK)
 apt-get update && apt-get install -y \
