@@ -71,7 +71,7 @@ router.post("/upload-attendance", upload.single("image"), async (req, res) => {
 
             } catch (error) {
                 console.error("JSON Parse Error:", error.message);
-                res.status(500).json({ error: "Failed to process image. Invalid JSON response from Python.",success:false });
+                res.status(500).json({ error: `Failed to process image. Invalid JSON response from Python: ${error.message}`,success:false });
             }
         });
 
