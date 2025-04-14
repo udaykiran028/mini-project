@@ -1,10 +1,18 @@
-# Use Node.js base image with Python and Debian
+# Use Node.js base image
 FROM node:18
 
-# Install Python and pip
+# Install Python, pip, and required system dependencies
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip && \
-    apt-get clean
+    apt-get install -y \
+    python3 \
+    python3-pip \
+    build-essential \
+    cmake \
+    libopenblas-dev \
+    liblapack-dev \
+    libx11-dev \
+    libopencv-dev \
+    && apt-get clean
 
 # Set working directory
 WORKDIR /app
