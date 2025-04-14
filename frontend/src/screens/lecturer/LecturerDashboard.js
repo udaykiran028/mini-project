@@ -81,7 +81,7 @@ const LecturerDashboard = ({ navigation }) => {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/lecturer-api/upload-attendance`,
+        "http://192.168.0.105:5000/lecturer-api/upload-attendance",
         {
           method: "POST",
           body: formData,
@@ -95,6 +95,7 @@ const LecturerDashboard = ({ navigation }) => {
         alert("Error uploading image. Please try again.");
         return;
       }
+
       alert("Image uploaded successfully!");
       console.log("detected_students", data.detected_students);
       setAttendenceId(data.attendance_id);
@@ -158,7 +159,7 @@ const LecturerDashboard = ({ navigation }) => {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/lecturer-api/submit-attendance`,
+        `http://192.168.0.105:5000/lecturer-api/submit-attendance`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

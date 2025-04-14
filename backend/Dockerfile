@@ -1,22 +1,26 @@
-FROM python:3.11
+# Base image with Node and Python
+FROM node:18
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    cmake \
-    build-essential \
-    libgtk-3-dev \
-    libboost-all-dev
+# Install Python and pip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip
 
 # Set working directory
 WORKDIR /app
 
-# Copy and install dependencies
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy package and install Node dependencies
+COPY package*.json ./
+RUN npm install
 
-# Copy project files
+# Copy Python requirements and install
+COPY requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Copy rest of the code
 COPY . .
 
-# Run the application
-CMD ["bash", "./start.sh"]
+# Expose port
+EXPOSE 3000
+
+# Start the app
+CMD ["node", "server.js"]
