@@ -1,43 +1,62 @@
-FROM node:18
+# Start from Debian slim as base
+FROM debian:bookworm-slim
 
-# Install Python and system dependencies
-RUN apt-get update && apt-get install -y \
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Install core dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    curl \
+    gnupg \
     python3 \
     python3-pip \
+    python3-dev \
+    python3-venv \
+    python3-opencv \
     cmake \
+    g++ \
+    git \
+    wget \
+    unzip \
     build-essential \
-    libboost-all-dev \
     libopenblas-dev \
     liblapack-dev \
     libx11-dev \
     libgtk-3-dev \
-    libopencv-dev \
-    git \
-    && apt-get clean
+    libboost-all-dev \
+    libssl-dev \
+    libffi-dev \
+    libgl1-mesa-glx \
+    libgl1-mesa-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# ---------- Install Node.js LTS (e.g., 18.x) ----------
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    node -v && npm -v
+
+# Create and activate Python virtual environment
+RUN python3 -m venv $VIRTUAL_ENV
 
 # Set working directory
 WORKDIR /app
 
-# Install Python packages one-by-one (especially dlib)
-# Install numpy first to prevent errors
-RUN pip3 install --no-cache-dir numpy
+# Copy project files
+COPY . /app
 
-# Install dlib first (as it's heavy and easier to debug separately)
-RUN pip3 install --no-cache-dir dlib==19.24.6
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir numpy dlib opencv-python
 
-# Then install the rest
-COPY requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-# Copy package files and install Node dependencies
-COPY package*.json ./
+# Install Node.js dependencies
 RUN npm install
 
-# Copy the rest of the code
-COPY . .
+# Expose your backend port (adjust if different)
+EXPOSE 5000
 
-# Expose the app port
-EXPOSE 3000
-
-# Start the server
+# Start Node.js server (server.js is your entry point)
 CMD ["node", "server.js"]
