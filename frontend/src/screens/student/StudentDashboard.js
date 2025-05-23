@@ -3,18 +3,18 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-nati
 import { useUser } from "../../../context/UserContext"; // Import the context
 import CircularProgress from "../CircularProgress"; // Import the component
 import { getAuth, signOut } from "firebase/auth";
+import { API_BASE_URL } from "../lecturer/LecturerDashboard"; // Adjust the import based on your project structure
 
 const StudentDashboard = ({navigation}) => {
   const { student } = useUser(); // Assuming you have a user context to get student info
   const [totalClasses, setTotalClasses] = useState(0);
   const [percentage, setPercentage] = useState(0);
   const { logoutUser } = useUser(); // Function to clear user data from context
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/student-api/total-classes`);
+        const response = await fetch(`http://${API_BASE_URL}:5000/student-api/total-classes`);
         const data = await response.json();
         console.log("Sent Data to Server:", student); // Debugging log
         console.log("Response from server:", data);

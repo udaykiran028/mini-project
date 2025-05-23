@@ -58,18 +58,20 @@ const AuthNavigator = () => {
   }
 
   return (
-    <Stack.Navigator>
-      {!student && !lecturer ? (
-        <>
-          <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
-        </>
-      ) : student ? (
-        <Stack.Screen name="StudentDashboard" component={StudentDashboard} options={{ headerShown: false }} />
-      ) : (
-        <Stack.Screen name="LecturerDashboard" component={LecturerDashboard} options={{ headerShown: false }} />
-      )}
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName={
+        student ? "StudentDashboard" :
+          lecturer ? "LecturerDashboard" :
+            "LoginScreen"
+      }
+    >
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="StudentDashboard" component={StudentDashboard} />
+      <Stack.Screen name="LecturerDashboard" component={LecturerDashboard} />
     </Stack.Navigator>
+
   );
 };
 
